@@ -1,19 +1,28 @@
-#include "sppmod.cpp"
+#include <cstdlib>
+using namespace std;
+
+// Common structure for both tasks
+struct Point {
+    double x, y;
+};
+
+// Function declarations
+void interpolate();
+void approximate();
 
 int main() {
-    sppHeader HEADER;
-    FILE* file = openSpp("foo.spp", "rb");
-    if (readHeader(file, &HEADER) != 0) {
-        closeSpp(file);
-        return 1;
-    };
-    int cntPoints = HEADER.numPoints;
-    closeSpp(file);
-    point** points = new point*[cntPoints];
-    sppRead("foo.spp", points);
-    printf("Num of points: %i\n", cntPoints);
-    for (int i = 0; i < cntPoints; i++) {
-        printf("Point %i: %f %f\n", i+1, points[i]->x, points[i]->y);
-    }
+    // Run interpolation
+    interpolate();
+    
+    // Run approximation
+    approximate();
+    
+    // Run gnuplot
+    system("gnuplot plot.plt");
+    
     return 0;
 }
+
+// Include the implementations
+#include "intrpl.cpp"
+#include "apprxm.cpp"
